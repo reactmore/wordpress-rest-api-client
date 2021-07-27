@@ -7,6 +7,7 @@ use GuzzleHttp\Psr7\Request;
 use RuntimeException;
 use Reactmore\WordpressClient\Request\GuzzleAdapter;
 use Reactmore\WordpressClient\Wordpress;
+use Reactmore\WordpressClient\Helpers\QueryString;
 
 /**
  * Class AbstractWpEndpoint
@@ -41,9 +42,12 @@ abstract class AbstractWpEndpoint
     {
         try {
 
+            $qs = new QueryString();
+            $qs->add('_fields', array('id', 'title', 'link', 'author', 'metadata', 'excerpt'));;
             $uri = $this->getEndpoint();
             $uri .= (is_null($id) ? '' : '/' . $id);
-            $uri .= (is_null($params) ? '' : '?' . http_build_query($params));
+            $uri .= (is_null($params) ? '' : '?' . $qs->build() . '&' . http_build_query($params));
+
 
             $request = new Request('GET', $uri, [
                 'connect_timeout' => 10,
