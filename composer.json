@@ -1,5 +1,6 @@
 {
     "name": "reactmore/wordpress-rest-api-client",
+    "description": "Wordpress Rest Api Client PHP ",
     "autoload": {
         "psr-4": {
             "Reactmore\\WordpressClient\\": "app/"
