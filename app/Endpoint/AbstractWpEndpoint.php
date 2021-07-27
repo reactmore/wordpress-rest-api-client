@@ -43,7 +43,48 @@ abstract class AbstractWpEndpoint
         try {
 
             $qs = new QueryString();
-            $qs->add('_fields', array('id', 'title', 'link', 'author', 'metadata', 'excerpt'));;
+
+            $uri = $this->getEndpoint();
+            $uri .= (is_null($id) ? '' : '/' . $id);
+            $uri .= (is_null($params) ? '' : '?' . http_build_query($params));
+
+
+            $request = new Request('GET', $uri, [
+                'connect_timeout' => 10,
+                'timeout' => 30
+            ]);
+
+            $response = $this->client->send($request);
+            if (
+                $response->hasHeader('Content-Type')
+                && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
+            ) {
+                $dataRespon = [
+                    'body' => json_decode($response->getBody()->getContents(), true),
+                    'total' => $response->getHeader('X-WP-Total'),
+                    'totalpages' => $response->getHeader('X-WP-TotalPages'),
+                ];
+
+                return  $dataRespon;
+            }
+        } catch (Exception $e) {
+            return GuzzleAdapter::handleException($e);
+        }
+    }
+
+    /**
+     * @param int $id
+     * @param array $params - parameters that can be passed to GET
+     *        e.g. for tags: https://developer.wordpress.org/rest-api/reference/tags/#arguments
+     * @return array
+     * @throws \RuntimeException
+     */
+    public function getPaginations($id = null, array $params = null)
+    {
+        try {
+
+            $qs = new QueryString();
+            $qs->add('_fields', array('id', 'title', 'link', 'author', 'metadata', 'excerpt', 'date'));;
             $uri = $this->getEndpoint();
             $uri .= (is_null($id) ? '' : '/' . $id);
             $uri .= (is_null($params) ? '' : '?' . $qs->build() . '&' . http_build_query($params));
