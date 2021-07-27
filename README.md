@@ -1,6 +1,14 @@
-"# wordpress-rest-api-client" 
+# wordpress-rest-api-client
 
 > A Wordpress REST API client for PHP
+
+## Installation
+
+This library can be installed with [Composer](https://getcomposer.org):
+
+```text
+composer require reactmore/wordpress-rest-api-client
+```
 
 ## Usage
 
