@@ -51,3 +51,8 @@ Array
 
 )
 ```
+
+## Screenshoot
+
+![Backend](https://raw.githubusercontent.com/reactmore/wordpress-rest-api-client/master/preview.jpg)
+Implementations Paginations
