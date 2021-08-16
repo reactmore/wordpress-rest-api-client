@@ -58,6 +58,25 @@ class Wordpress
     }
 
     /**
+     * @param $endpoint
+     * @param array $args
+     * @return Endpoint\AbstractWpEndpoint
+     */
+    public function __call($endpoint, array $args)
+    {
+        if (!isset($this->endPoints[$endpoint])) {
+            $class = 'Reactmore\WordpressClient\Endpoint\\' . ucfirst($endpoint);
+            if (class_exists($class)) {
+                $this->endPoints[$endpoint] = new $class($this);
+            } else {
+                throw new RuntimeException('Endpoint "' . $endpoint . '" does not exist"');
+            }
+        }
+
+        return $this->endPoints[$endpoint];
+    }
+
+    /**
      * @param RequestInterface $request
      * @return ResponseInterface
      */
