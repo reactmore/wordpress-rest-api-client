@@ -29,6 +29,7 @@ abstract class AbstractWpEndpoint
         $this->client = $client;
     }
 
+
     abstract protected function getEndpoint();
 
     /**
@@ -59,11 +60,7 @@ abstract class AbstractWpEndpoint
                 $response->hasHeader('Content-Type')
                 && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
             ) {
-                $dataRespon = [
-                    'body' => json_decode($response->getBody()->getContents(), true),
-                    'total' => $response->getHeader('X-WP-Total'),
-                    'totalpages' => $response->getHeader('X-WP-TotalPages'),
-                ];
+                $dataRespon = json_decode($response->getBody()->getContents(), true);
 
                 return  $dataRespon;
             }
