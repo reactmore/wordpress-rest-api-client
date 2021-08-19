@@ -68,6 +68,9 @@ class GuzzleAdapter implements ClientInterface
             ], 408, 'failed');
         } else {
             $error = json_decode($exception->getResponse()->getBody()->getContents(), true);
+            if (empty($error['error'])) {
+                $error['message'] = 'Request Failed';
+            }
             return ResponseFormatter::formatResponse([
                 'error' => $error['message']
             ], 400, 'failed');
