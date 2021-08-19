@@ -136,7 +136,7 @@ function custom_api_get_all_posts_callback(WP_REST_Request $request)
 
     // if no posts found return 
     if (empty($query->posts)) {
-        return new WP_Error('no_posts', __('No post found'), array('status' => 404));
+        return array();
     }
 
     // set max number of pages and total num of posts
