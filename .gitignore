@@ -3394,3 +3394,4 @@ old/vendor/vnn/wordpress-rest-api-client/src/Endpoint/Tags.php
 old/vendor/vnn/wordpress-rest-api-client/src/Endpoint/Users.php
 old/vendor/vnn/wordpress-rest-api-client/src/Http/ClientInterface.php
 old/vendor/vnn/wordpress-rest-api-client/src/Http/GuzzleAdapter.php
+s.json

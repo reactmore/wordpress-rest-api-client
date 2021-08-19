@@ -4,10 +4,10 @@ namespace Reactmore\WordpressClient;
 
 use Psr\Http\Message\RequestInterface;
 use Psr\Http\Message\ResponseInterface;
-use RuntimeException;
-use Reactmore\WordpressClient\Auth\AuthInterface;
 use Reactmore\WordpressClient\Endpoint;
+use Reactmore\WordpressClient\Auth\AuthInterface;
 use Reactmore\WordpressClient\Request\ClientInterface;
+use RuntimeException;
 
 /**
  * Class Wordpress
@@ -86,9 +86,12 @@ class Wordpress
             $request = $this->credentials->addCredentials($request);
         }
 
+
+
         $request = $request->withUri(
             $this->httpClient->makeUri($this->wordpressUrl . $request->getUri())
         );
+
 
         return $this->httpClient->send($request);
     }

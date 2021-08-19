@@ -60,12 +60,16 @@ abstract class AbstractWpEndpoint
                 $response->hasHeader('Content-Type')
                 && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
             ) {
-                $dataRespon = json_decode($response->getBody()->getContents(), true);
 
-                return  $dataRespon;
+                return [
+                    'status' => 'success',
+                    'code' => $response->getStatusCode(),
+                    'data' => json_decode($response->getBody()->getContents(), true),
+
+                ];
             }
         } catch (Exception $e) {
-            return GuzzleAdapter::handleException($e);
+            return GuzzleAdapter::RequestHandleException($e);
         }
     }
 
@@ -97,16 +101,16 @@ abstract class AbstractWpEndpoint
                 $response->hasHeader('Content-Type')
                 && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
             ) {
-                $dataRespon = [
-                    'body' => json_decode($response->getBody()->getContents(), true),
-                    'total' => $response->getHeader('X-WP-Total'),
-                    'totalpages' => $response->getHeader('X-WP-TotalPages'),
+                return [
+                    'status' => 'success',
+                    'code' => $response->getStatusCode(),
+                    'data' => json_decode($response->getBody()->getContents(), true),
+                    'X-WP-TOTAL' => $response->getHeader('X-WP-Total')[0],
+                    'X-WP-TOTAL-PAGE' =>  $response->getHeader('X-WP-TotalPages')[0],
                 ];
-
-                return  $dataRespon;
             }
         } catch (Exception $e) {
-            return GuzzleAdapter::handleException($e);
+            return GuzzleAdapter::RequestHandleException($e);
         }
     }
 
@@ -117,23 +121,31 @@ abstract class AbstractWpEndpoint
      */
     public function save(array $data)
     {
-        $url = $this->getEndpoint();
+        try {
+            $url = $this->getEndpoint();
 
-        if (isset($data['id'])) {
-            $url .= '/' . $data['id'];
-            unset($data['id']);
+
+            if (isset($data['id'])) {
+                $url .= '/' . $data['id'];
+                unset($data['id']);
+            }
+
+            $request = new Request('POST', $url, ['Content-Type' => 'application/json'], json_encode($data));
+            $response = $this->client->send($request);
+
+
+            if (
+                $response->hasHeader('Content-Type')
+                && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
+            ) {
+                return [
+                    'status' => 'success',
+                    'code' => $response->getStatusCode(),
+                    'data' => json_decode($response->getBody()->getContents(), true)
+                ];
+            }
+        } catch (Exception $e) {
+            return GuzzleAdapter::handleException($e);
         }
-
-        $request = new Request('POST', $url, ['Content-Type' => 'application/json'], json_encode($data));
-        $response = $this->client->send($request);
-
-        if (
-            $response->hasHeader('Content-Type')
-            && substr($response->getHeader('Content-Type')[0], 0, 16) === 'application/json'
-        ) {
-            return json_decode($response->getBody()->getContents(), true);
-        }
-
-        throw new RuntimeException('Unexpected response');
     }
 }

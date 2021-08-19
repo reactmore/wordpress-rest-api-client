@@ -52,8 +52,24 @@ class GuzzleAdapter implements ClientInterface
                 'error' => 'Connection Timeout Error. Please check your internet connection and try again'
             ], 408, 'failed');
         } else {
+            $error = json_decode($exception->getResponse()->getBody()->getContents(), true);
             return ResponseFormatter::formatResponse([
-                'error' => $exception->getMessage()
+                'error' => $error['message'],
+                'term_id' => $error['data']['term_id']
+            ], 400, 'failed');
+        }
+    }
+
+    public static function RequestHandleException($exception)
+    {
+        if ($exception instanceof ConnectException) {
+            return ResponseFormatter::formatResponse([
+                'error' => 'Connection Timeout Error. Please check your internet connection and try again'
+            ], 408, 'failed');
+        } else {
+            $error = json_decode($exception->getResponse()->getBody()->getContents(), true);
+            return ResponseFormatter::formatResponse([
+                'error' => $error['message']
             ], 400, 'failed');
         }
     }
