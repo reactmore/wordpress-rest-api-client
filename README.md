@@ -31,7 +31,7 @@ print_r($posts);
 echo '</pre>';
 ```
 
-Response:
+Response Success:
 
 Body = All respon from Wordpress api
 Total = Total Item from X-WP-TOTAL
@@ -41,21 +41,38 @@ TotalPages = Total Page From X-WP-TOTALPAGE
 Array
 (
 
-    [body] => Array
-        (
-            xxxxxxxxxx
-            xxxxxxxxxx
-        )
+    [status] => success
+    [code] => 200
+    [data] => Array(
+        
+        id =>
+        slug => 
+        xxxx
+    )
+    [X-WP-TOTAL] => 6909
+    [X-WP-TOTAL-PAGE] => 70
 
-    [total] => Array
-        (
-         xxxxxxxxxx
-        )
+)
+```
 
-    [totalpages] => Array
-        (
-         xxxxxxxxxx
-        )
+Response Error:
+
+Body = All respon from Wordpress api
+Total = Total Item from X-WP-TOTAL
+TotalPages = Total Page From X-WP-TOTALPAGE
+
+```Array
+Array
+(
+
+    [status] => success
+    [code] => 200
+    [error] => Array(
+        
+        message =>
+       
+    )
+ 
 
 )
 ```
