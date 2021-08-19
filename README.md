@@ -33,11 +33,11 @@ echo '</pre>';
 
 Response Success:
 
-status = status name
-code = status Code
-data = callback data from wordpress
-X-WP-TOTAL = count all post on current result
-X-WP-TOTAL-PAGE = count all page on current result
+- status = status name
+- code = status Code
+- data = callback data from wordpress
+- X-WP-TOTAL = count all post on current result
+- X-WP-TOTAL-PAGE = count all page on current result
 
 ```Array
 Array
@@ -59,9 +59,9 @@ Array
 
 Response Error:
 
-status = status name
-code = status Code
-error = error message
+- status = status name
+- code = status Code
+- error = error message
 
 ```Array
 Array
